@@ -1,4 +1,4 @@
-<img width="945" height="414" alt="Screenshot 2026-09-06 215056" src="https://github.com/user-attachments/assets/b04c8ab1-913a-4ac1-844a-3732eb681e72" />
+
 # Face Attendance System
 
 <p align="center">
