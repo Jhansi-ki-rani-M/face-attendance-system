@@ -1,4 +1,4 @@
-# 🎓 Face Attendance System
+# Face Attendance System
 
 <p align="center">
   <b>A smart, web-based attendance management system using Face Detection and Face Recognition.</b>
@@ -10,7 +10,7 @@
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 The **Face Attendance System** is a web-based application designed to simplify student attendance management using computer vision.
 
@@ -20,56 +20,56 @@ Attendance is **not marked automatically**. It is recorded only after the user e
 
 ---
 
-## ✨ Features
+## Features
 
-- 👤 **Student Registration**
+- **Student Registration**
   - Register new students using a webcam.
   - Capture multiple face samples for better recognition.
 
-- 🔍 **Face Detection**
+- **Face Detection**
   - Detect faces from webcam frames using OpenCV's YuNet model.
 
-- 🧠 **Face Recognition**
+- **Face Recognition**
   - Recognize registered students using the SFace face recognition model.
 
-- 📋 **Manual Attendance Marking**
+- **Manual Attendance Marking**
   - Recognition and attendance marking are separate.
   - Attendance is recorded only after explicit confirmation.
 
-- 📊 **Attendance Records**
+- **Attendance Records**
   - View recorded attendance through the web interface.
 
-- 🎨 **Modern Web Interface**
+- **Modern Web Interface**
   - Clean and responsive dashboard.
   - Light, System, and Dark theme support.
 
-- 🔒 **Privacy Protection**
+- **Privacy Protection**
   - Face datasets and attendance data are kept locally.
   - Personal face images are excluded from the public GitHub repository.
 
 ---
 
-# 🖥️ Application Screenshots
+# Application Screenshots
 
-## 🏠 Dashboard
+## Dashboard
 
 <p align="center">
   <img src="screenshots/dashboard.png" width="800">
 </p>
 
-## 👤 Student Registration
+## Student Registration
 
 <p align="center">
   <img src="screenshots/register.png" width="800">
 </p>
 
-## 🔍 Face Recognition & Attendance
+## Face Recognition & Attendance
 
 <p align="center">
   <img src="screenshots/attendance.png" width="800">
 </p>
 
-## 📊 Attendance Records
+## Attendance Records
 
 <p align="center">
   <img src="screenshots/records.png" width="800">
@@ -77,22 +77,22 @@ Attendance is **not marked automatically**. It is recorded only after the user e
 
 ---
 
-# 🛠️ Technologies Used
+# Technologies Used
 
 | Technology | Purpose |
 |------------|---------|
-| 🐍 Python | Core programming language |
-| 🌐 Flask | Web application framework |
-| 👁️ OpenCV | Computer vision and image processing |
-| 🧠 YuNet | Face detection |
-| 🔎 SFace | Face recognition |
+| Python | Core programming language |
+| Flask | Web application framework |
+| OpenCV | Computer vision and image processing |
+| YuNet | Face detection |
+| SFace | Face recognition |
 | HTML | Web page structure |
 | CSS | Web page styling |
 | JavaScript | Webcam interaction and frontend functionality |
 
 ---
 
-# 🧠 How the System Works
+# How the System Works
 
 The system follows a simple workflow:
 
@@ -132,7 +132,7 @@ The system follows a simple workflow:
 
 ---
 
-# 📂 Project Structure
+# Project Structure
 
 ```text
 face-attendance-system/
@@ -171,7 +171,7 @@ face-attendance-system/
 
 ---
 
-# ⚙️ Installation & Setup
+# Installation & Setup
 
 ## 1. Clone the Repository
 
@@ -210,9 +210,9 @@ The application will start on the local Flask server.
 
 ---
 
-# 🖥️ How to Use
+# How to Use
 
-## 👤 Register a Student
+## Register a Student
 
 1. Open the application in your browser.
 2. Select **Register Student**.
@@ -221,7 +221,7 @@ The application will start on the local Flask server.
 5. The system captures multiple face samples.
 6. The face samples are stored locally for recognition.
 
-## 📸 Take & Mark Attendance
+## Take & Mark Attendance
 
 1. Select **Take & Mark Attendance**.
 2. Allow webcam access.
@@ -231,14 +231,14 @@ The application will start on the local Flask server.
 6. Click the attendance button to explicitly mark attendance.
 7. The attendance record is stored in the attendance CSV file.
 
-## 📊 View Attendance Records
+## View Attendance Records
 
 1. Select **Attendance Records**.
 2. The system displays the recorded attendance for the current day.
 
 ---
 
-# 🔐 Privacy & Security
+# Privacy & Security
 
 - Student face datasets are stored locally.
 - Face images are not included in the public GitHub repository.
@@ -249,7 +249,7 @@ The application will start on the local Flask server.
 
 ---
 
-# 🎯 Project Objectives
+# Project Objectives
 
 The main objectives of this project are:
 
@@ -262,7 +262,7 @@ The main objectives of this project are:
 
 ---
 
-# 🚀 Future Improvements
+# Future Improvements
 
 - Add a database for storing student and attendance information.
 - Improve face recognition accuracy under different lighting conditions.
@@ -275,7 +275,7 @@ The main objectives of this project are:
 
 ---
 
-# 📚 Learning Outcomes
+# Learning Outcomes
 
 Through this project, I gained practical experience in:
 
@@ -293,7 +293,7 @@ Through this project, I gained practical experience in:
 
 ---
 
-# 👩‍💻 Author
+# Author
 
 **Jhansi M**
 
