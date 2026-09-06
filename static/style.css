@@ -1,0 +1,57 @@
+.register-box {
+    background: white;
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.register-box label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.register-box input {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.camera-container {
+    margin-top: 25px;
+    width: 100%;
+    background: #111;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.camera-container video {
+    width: 100%;
+    display: block;
+}
+
+#status {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.progress-container {
+    width: 100%;
+    height: 12px;
+    background: #ddd;
+    border-radius: 10px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    transition: width 0.3s ease;
+}

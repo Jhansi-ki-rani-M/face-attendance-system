@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Register Student</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Register New Student</h1>
+
+    <p class="subtitle">
+        Enter the student's name and register their face.
+    </p>
+
+
+    <div class="register-box">
+
+        <label for="name">
+            Student Name
+        </label>
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter student name"
+        >
+
+
+        <button
+            id="startButton"
+            onclick="startCamera()"
+        >
+            Start Camera
+        </button>
+
+
+        <div class="camera-container">
+
+            <video
+                id="video"
+                autoplay
+                playsinline
+            ></video>
+
+            <canvas
+                id="canvas"
+                style="display:none;"
+            ></canvas>
+
+        </div>
+
+
+        <p id="status">
+            Enter a name and start the camera.
+        </p>
+
+
+        <div class="progress-container">
+
+            <div
+                id="progressBar"
+                class="progress-bar">
+            </div>
+
+        </div>
+
+
+        <p id="counter">
+            Captured: 0 / 30
+        </p>
+
+
+        <button
+            id="stopButton"
+            onclick="stopCamera()"
+            style="display:none;"
+        >
+            Stop Camera
+        </button>
+
+    </div>
+
+
+    <br>
+
+
+    <a href="/">
+        <button>
+            ← Back to Dashboard
+        </button>
+    </a>
+
+</div>
+
+
+<script>
+
+let video = document.getElementById("video");
+
+let canvas = document.getElementById("canvas");
+
+let statusText = document.getElementById("status");
+
+let counter = document.getElementById("counter");
+
+let progressBar = document.getElementById("progressBar");
+
+let startButton = document.getElementById("startButton");
+
+let stopButton = document.getElementById("stopButton");
+
+let stream = null;
+
+let capturing = false;
+
+let captureInterval = null;
+
+
+// ---------------------------------------------
+// START CAMERA
+// ---------------------------------------------
+
+async function startCamera() {
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    if (name === "") {
+
+        statusText.innerText =
+            "Please enter the student's name.";
+
+        return;
+    }
+
+
+    try {
+
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        });
+
+        video.srcObject = stream;
+
+        statusText.innerText =
+            "Camera started. Look at the camera.";
+
+        startButton.style.display = "none";
+
+        stopButton.style.display = "inline-block";
+
+        capturing = true;
+
+        // Start capturing every 700 milliseconds
+        captureInterval = setInterval(
+            captureFrame,
+            700
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        statusText.innerText =
+            "Could not access camera. Please allow camera permission.";
+
+    }
+
+}
+
+
+// ---------------------------------------------
+// CAPTURE FRAME
+// ---------------------------------------------
+
+async function captureFrame() {
+
+    if (!capturing) {
+        return;
+    }
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    if (name === "") {
+        return;
+    }
+
+
+    canvas.width = video.videoWidth;
+
+    canvas.height = video.videoHeight;
+
+
+    const context =
+        canvas.getContext("2d");
+
+
+    context.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const image =
+        canvas.toDataURL("image/jpeg");
+
+
+    try {
+
+        const response =
+            await fetch("/capture_face", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    name: name,
+                    image: image
+                })
+
+            });
+
+
+        const result =
+            await response.json();
+
+
+        if (result.success) {
+
+            const count = result.count;
+
+            counter.innerText =
+                `Captured: ${count} / 30`;
+
+
+            const percentage =
+                (count / 30) * 100;
+
+
+            progressBar.style.width =
+                percentage + "%";
+
+
+            statusText.innerText =
+                result.message;
+
+
+            if (result.complete) {
+
+                registrationComplete();
+
+            }
+
+        }
+
+        else {
+
+            statusText.innerText =
+                result.message;
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        statusText.innerText =
+            "Error communicating with server.";
+
+    }
+
+}
+
+
+// ---------------------------------------------
+// REGISTRATION COMPLETE
+// ---------------------------------------------
+
+function registrationComplete() {
+
+    capturing = false;
+
+    clearInterval(captureInterval);
+
+    statusText.innerText =
+        "Registration complete! ✅";
+
+    stopCamera();
+
+}
+
+
+// ---------------------------------------------
+// STOP CAMERA
+// ---------------------------------------------
+
+function stopCamera() {
+
+    capturing = false;
+
+    clearInterval(captureInterval);
+
+
+    if (stream) {
+
+        stream.getTracks().forEach(
+            track => track.stop()
+        );
+
+        stream = null;
+
+    }
+
+
+    video.srcObject = null;
+
+    startButton.style.display =
+        "inline-block";
+
+    stopButton.style.display =
+        "none";
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+dataset/
+attendance/attendance.csv
+*.jpg
+*.jpeg
+*.png
+.vscode/
+.idea/

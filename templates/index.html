@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Face Attendance System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Face Attendance System</h1>
+
+        <p class="subtitle">
+            Smart Face Recognition Attendance System
+        </p>
+
+        <div class="cards">
+
+            <div class="card">
+                <h2>Register Student</h2>
+                <p>
+                    Register a new student using face recognition.
+                </p>
+
+            <a href="/register">
+               <button>
+                Register Student
+               </button>
+            </a>
+            </div>
+
+
+            <div class="card">
+                <a href="/attendance">
+                <button>Take Attendance</button>
+                </a>
+                <p>
+                    Start the camera and automatically mark attendance.
+                </p>
+            </div>
+
+
+            <div class="card">
+                <h2>Attendance Records</h2>
+                <p>
+                    View today's attendance records.
+                </p>
+
+                <button>
+                    View Records
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

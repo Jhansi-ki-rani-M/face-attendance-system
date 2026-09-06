@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Today's Attendance</title>
+</head>
+
+<body>
+
+    <h1>Today's Attendance</h1>
+
+    {% if records %}
+
+        {% for record in records %}
+
+            <p>
+                <strong>{{ record["Name"] }}</strong>
+                - {{ record["Time"] }}
+                - {{ record["Status"] }}
+            </p>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No attendance marked today.</p>
+
+    {% endif %}
+
+</body>
+</html>

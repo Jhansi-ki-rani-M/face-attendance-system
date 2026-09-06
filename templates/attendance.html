@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Take Attendance</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Take Attendance</h1>
+
+        <p id="status">
+            Starting camera...
+        </p>
+
+
+        <!-- CAMERA -->
+
+        <video
+            id="video"
+            width="640"
+            height="480"
+            autoplay
+            playsinline>
+        </video>
+
+        <canvas
+            id="canvas"
+            style="display:none;">
+        </canvas>
+
+
+        <!-- RECOGNITION RESULT -->
+
+        <div id="result"></div>
+
+
+        <!-- BACK BUTTON -->
+
+        <br>
+
+        <a href="/">
+            <button type="button">
+                Back to Dashboard
+            </button>
+        </a>
+
+    </div>
+
+
+<script>
+
+let video = document.getElementById("video");
+let canvas = document.getElementById("canvas");
+
+let statusText = document.getElementById("status");
+let result = document.getElementById("result");
+
+let stream = null;
+let attendanceInterval = null;
+
+
+// =================================================
+// START CAMERA
+// =================================================
+
+async function startCamera() {
+
+    try {
+
+        stream = await navigator.mediaDevices.getUserMedia({
+
+            video: true,
+            audio: false
+
+        });
+
+
+        video.srcObject = stream;
+
+
+        statusText.innerText =
+            "Camera started. Look at the camera.";
+
+
+        attendanceInterval =
+            setInterval(sendFrame, 1000);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        statusText.innerText =
+            "Could not access camera. Please allow permission.";
+
+    }
+
+}
+
+
+// =================================================
+// SEND FRAME TO FLASK
+// =================================================
+
+async function sendFrame() {
+
+    if (!stream) return;
+
+    if (video.videoWidth === 0) return;
+
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+
+    const context =
+        canvas.getContext("2d");
+
+
+    context.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    const image =
+        canvas.toDataURL("image/jpeg");
+
+
+    try {
+
+        const response =
+            await fetch("/recognize", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    image: image
+                })
+
+            });
+
+
+        const data =
+            await response.json();
+
+
+        // =========================================
+        // SUCCESS
+        // =========================================
+
+        if (data.success) {
+
+            statusText.innerText =
+                data.message;
+
+
+            result.innerHTML = "";
+
+
+            // =====================================
+            // NO FACE
+            // =====================================
+
+            if (data.results.length === 0) {
+
+                result.innerHTML =
+                    "<p>No face detected.</p>";
+
+                return;
+            }
+
+
+            // =====================================
+            // SHOW EACH FACE
+            // =====================================
+
+            data.results.forEach(person => {
+
+                const div =
+                    document.createElement("div");
+
+
+                const name =
+                    document.createElement("h2");
+
+                name.innerText =
+                    person.name;
+
+
+                const confidence =
+                    document.createElement("p");
+
+                confidence.innerText =
+                    "Confidence: " +
+                    person.score;
+
+
+                const personStatus =
+                    document.createElement("p");
+
+                personStatus.innerText =
+                    person.status;
+
+
+                div.appendChild(name);
+
+                div.appendChild(confidence);
+
+                div.appendChild(personStatus);
+
+
+                // =================================
+                // UNKNOWN PERSON
+                // =================================
+
+                if (
+                    person.name === "Unknown"
+                ) {
+
+                    const unknownText =
+                        document.createElement("p");
+
+                    unknownText.innerText =
+                        "Please register this student first.";
+
+                    div.appendChild(
+                        unknownText
+                    );
+
+                }
+
+
+                // =================================
+                // ALREADY MARKED
+                // =================================
+
+                else if (
+                    person.status ===
+                    "Attendance already marked today."
+                ) {
+
+                    const alreadyText =
+                        document.createElement("p");
+
+                    alreadyText.innerText =
+                        "✓ Attendance is already recorded for today.";
+
+                    div.appendChild(
+                        alreadyText
+                    );
+
+                }
+
+
+                // =================================
+                // READY TO MARK
+                // =================================
+
+                else {
+
+                    const button =
+                        document.createElement("button");
+
+
+                    button.innerText =
+                        "Mark Attendance";
+
+
+                    button.type =
+                        "button";
+
+
+                    button.onclick =
+                        function () {
+
+                            markAttendance(
+                                person.name,
+                                button,
+                                personStatus
+                            );
+
+                        };
+
+
+                    div.appendChild(
+                        button
+                    );
+
+                }
+
+
+                result.appendChild(div);
+
+            });
+
+        }
+
+
+        // =========================================
+        // SERVER ERROR
+        // =========================================
+
+        else {
+
+            statusText.innerText =
+                data.message;
+
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        statusText.innerText =
+            "Error communicating with server.";
+
+    }
+
+}
+
+
+// =================================================
+// EXPLICITLY MARK ATTENDANCE
+// =================================================
+
+async function markAttendance(
+    name,
+    button,
+    personStatus
+) {
+
+    // Disable button immediately
+    button.disabled = true;
+
+    button.innerText =
+        "Marking...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/mark_attendance",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        name: name
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        // =========================================
+        // SUCCESS
+        // =========================================
+
+        if (data.success) {
+
+            personStatus.innerText =
+                data.message;
+
+
+            if (data.marked) {
+
+                button.innerText =
+                    "✓ Attendance Marked";
+
+            }
+
+            else {
+
+                button.innerText =
+                    "Already Marked";
+
+            }
+
+        }
+
+
+        // =========================================
+        // ERROR
+        // =========================================
+
+        else {
+
+            personStatus.innerText =
+                data.message;
+
+            button.disabled = false;
+
+            button.innerText =
+                "Mark Attendance";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        personStatus.innerText =
+            "Could not mark attendance.";
+
+        button.disabled = false;
+
+        button.innerText =
+            "Mark Attendance";
+
+    }
+
+}
+
+
+// =================================================
+// STOP CAMERA
+// =================================================
+
+function stopCamera() {
+
+    clearInterval(
+        attendanceInterval
+    );
+
+    attendanceInterval = null;
+
+
+    if (stream) {
+
+        stream.getTracks().forEach(
+            track => track.stop()
+        );
+
+        stream = null;
+
+    }
+
+
+    video.srcObject = null;
+
+    statusText.innerText =
+        "Camera stopped.";
+
+}
+
+
+// =================================================
+// START
+// =================================================
+
+startCamera();
+
+</script>
+
+</body>
+
+</html>
