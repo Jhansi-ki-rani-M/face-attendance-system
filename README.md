@@ -50,7 +50,7 @@ Attendance is **not marked automatically**. It is recorded only after the user e
 
 ---
 
-# Application Screenshots
+# Application Overview
 
 ## Dashboard
 
