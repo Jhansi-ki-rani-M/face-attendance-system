@@ -1,3 +1,4 @@
+<img width="945" height="414" alt="Screenshot 2026-09-06 215056" src="https://github.com/user-attachments/assets/b04c8ab1-913a-4ac1-844a-3732eb681e72" />
 # Face Attendance System
 
 <p align="center">
@@ -54,25 +55,28 @@ Attendance is **not marked automatically**. It is recorded only after the user e
 ## Dashboard
 
 <p align="center">
-  <img src="screenshots/dashboard.png" width="800">
+  <img width="945" height="414" alt="Screenshot 2026-09-06 215056" src="https://github.com/user-attachments/assets/ab2bbf92-0d3d-418b-a622-89c43863d62d" />
+  
+  <img width="947" height="410" alt="Screenshot 2026-09-06 215108" src="https://github.com/user-attachments/assets/ae6133f1-46d2-428e-b426-66304d0f4958" />
+
 </p>
 
 ## Student Registration
 
 <p align="center">
-  <img src="screenshots/register.png" width="800">
+  <img width="943" height="412" alt="Screenshot 2026-09-06 215124" src="https://github.com/user-attachments/assets/d1090537-9f0a-41dc-9b77-3a8c698c5db7" />
 </p>
 
 ## Face Recognition & Attendance
 
 <p align="center">
-  <img src="screenshots/attendance.png" width="800">
+  <img width="941" height="409" alt="Screenshot 2026-09-06 215202" src="https://github.com/user-attachments/assets/db90be18-2c24-4ca9-b68e-9d2040b93788" />
 </p>
 
 ## Attendance Records
 
 <p align="center">
-  <img src="screenshots/records.png" width="800">
+  <img width="946" height="407" alt="Screenshot 2026-09-06 215215" src="https://github.com/user-attachments/assets/860ca3dc-2b2e-45db-aa4c-adb408f78111" />
 </p>
 
 ---
