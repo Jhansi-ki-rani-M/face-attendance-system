@@ -303,6 +303,7 @@ Through this project, I gained practical experience in:
 
 B.Tech – Computer Science Engineering  
 Artificial Intelligence & Machine Learning
+Honors in Cybersecurity
 
 GitHub:  
 https://github.com/Jhansi-ki-rani-M
